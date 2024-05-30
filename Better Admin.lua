@@ -316,53 +316,6 @@ Tab:AddButton({
       		game.Players.LocalPlayer.Character.Humanoid.Health = 0
   	end    
 })
-Tab:AddButton({
-	Name = ";granada",
-	Callback = function()
-               -- Referência para a granada
-local Granada = script.Parent
-
--- Variável para rastrear se a granada foi ativada
-local ativada = false
-
--- Lidar com a ativação da granada pelo jogador
-Granada.Activated:Connect(function()
-    if not ativada then
-        ativada = true
-        -- Adicione aqui os efeitos visuais e sonoros de ativação, se desejar
-    else
-        -- Se a granada já estiver ativada, não faz nada
-        return
-    end
-end)
-
--- Lidar com o clique do jogador no local onde deseja lançar a granada
-game:GetService("Players").LocalPlayer.MouseButton1Down:Connect(function()
-    if ativada then
-        -- Obter a posição onde o jogador clicou
-        local mouse = game.Players.LocalPlayer:GetMouse()
-        local destino = mouse.Hit.Position
-        
-        -- Lançar a granada até o local clicado
-        local velocidade = 100 -- Velocidade de lançamento (ajuste conforme necessário)
-        local direção = (destino - Granada.Position).unit
-        Granada.Velocity = direção * velocidade
-        
-        -- Função para lidar com a explosão da granada após o lançamento
-        local function Explodir()
-            -- Adicione aqui os efeitos visuais e sonoros da explosão
-            Granada:Destroy()  -- Destruir a granada após a explosão
-        end
-        
-        -- Esperar um curto período de tempo antes de explodir
-        wait(2)
-        Explodir()
-        
-        ativada = false  -- Redefinir a flag de ativada
-    end
-end)
-  	end    
-})
 
 local Tab = Window:MakeTab({
 	Name = "Vip",
@@ -371,34 +324,6 @@ local Tab = Window:MakeTab({
 })
 local Section = Tab:AddSection({
 	Name = "Vip"
-})
-Tab:AddTextbox({
-	Name = ";color",
-	Default = "0, 0, 255",
-	TextDisappear = false,
-	Callback = function(Value)
-		-- Obter o serviço de jogador local
-local player = game:GetService("Players").LocalPlayer
-
--- Função para alterar a cor do jogador para azul
-local function changePlayerColorToBlue()
-    -- Verificar se o jogador tem um personagem
-    if player.Character then
-        -- Iterar sobre todas as partes do personagem e alterar a cor para azul
-        for _, part in ipairs(player.Character:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.Color = Color3.fromRGB(Value)  -- Azul
-            end
-        end
-        return "Cor do jogador alterada para azul."
-    else
-        return "Você não tem um personagem no jogo."
-    end
-end
-
--- Chamar a função para alterar a cor do jogador para azul
-changePlayerColorToBlue()
-	end	  
 })
 Tab:AddButton({
 	Name = ";ocultar chat",
