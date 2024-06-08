@@ -2,138 +2,6 @@ Nome = "Better Admin"
 Versao = '1.0'
 Dono = " Kelvin"
 
-ranking = " Owner"
-rank = ranking
-
--- Owner 
--- AdminHead 
--- Admin 
--- Mod 
--- Vip 
--- Member
-
--- Comandos chat:
-
-game.Players.LocalPlayer.Chatted:Connect(function(msg)
-    if msg:lower() == ";fly" then
-        loadstring(game:HttpGet('https://pastebin.com/raw/YSL3xKYU'))()
-    end
-end)
-
-game.Players.LocalPlayer.Chatted:Connect(function(msg)
-    if msg:lower() == ";vfly" then
-        loadstring(game:HttpGet("https://pastebin.com/raw/MHE1cbWF"))()
-    end
-end)
-
-game.Players.LocalPlayer.Chatted:Connect(function(msg)
-    if msg:lower() == ";reset" then
-        game.Players.LocalPlayer.Character.Humanoid.Health = 0
-    end
-end)
-
-game.Players.LocalPlayer.Chatted:Connect(function(msg)
-    if msg:lower() == ";rejoin" then
-        wait(1)    
-        game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
-    end
-end)
-
-game.Players.LocalPlayer.Chatted:Connect(function(msg)
-    if msg:lower() == ";sit" then
-        local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
-
-local function onJump()
-    humanoid.Sit = false
-end
-
-humanoid.Sit = true
-humanoid.Jumping:Connect(onJump)
-    end
-end)
-
-game.Players.LocalPlayer.Chatted:Connect(function(msg)
-    if msg:lower() == ";sitwalk" then
-        local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
-
--- Armazena o estado atual do jogador (andando ou parado)
-local isWalking = false
-
--- Função para lidar com o pulo e a movimentação
-local function handleMovement()
-    humanoid.Sit = false -- Desativa o estado de sentar
-end
-
--- Função para verificar se o jogador está andando
-local function checkWalking()
-    if humanoid.MoveDirection.magnitude > 0 then
-        -- Se o jogador estiver andando
-        if not isWalking then
-            -- Ativa a função de movimento
-            handleMovement()
-            isWalking = true -- Atualiza o estado para andando
-        end
-    else
-        -- Se o jogador não estiver andando
-        if isWalking then
-            humanoid.Sit = true -- Ativa o estado de sentar
-            isWalking = false -- Atualiza o estado para parado
-        end
-    end
-end
-
--- Conectar a função ao evento de atualização do corredor
-game:GetService("RunService").Heartbeat:Connect(checkWalking)
-
--- Sentar o personagem inicialmente
-humanoid.Sit = true
-    end
-end)
-
-local function perm()
-  local player = game.Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
-local notification = Instance.new("ScreenGui")
-notification.Name = "notification"
-notification.Parent = playerGui
-
-local Background = Instance.new("Frame")
-Background.Size = UDim2.new(0, 300, 0, 50)  
-Background.Position = UDim2.new(0.5, -150, 0.5, -25) 
-Background.BackgroundColor3 = Color3.new(0, 0, 0)
-Background.Parent = notification
-
-local countdownText = Instance.new("TextLabel")
-countdownText.Text = "Você não tem permissão para executar este comando (4)"
-countdownText.TextColor3 = Color3.new(1, 1, 1)
-countdownText.BackgroundColor3 = Color3.new(0, 0, 0)
-countdownText.TextSize = 19
-countdownText.Size = UDim2.new(1, 0, 1, 0)
-countdownText.Parent = Background
-
-local countdown = 4
-local countdownInterval = 1
-
-local function updateCountdown()
-    countdown = countdown - 1
-    countdownText.Text = "Você não tem permissão para executar este comando (" .. countdown .. ")"
-
-    if countdown <= 0 then
-        notification:Destroy()
-    else
-
-        wait(countdownInterval)
-        updateCountdown()
-    end
-end
-
-updateCountdown()
- end
-
 theme = "https://raw.githubusercontent.com/porrinha09/Better-Admin/main/Temas/gifhub%20dark.lua"
 
 local function api()
@@ -149,70 +17,28 @@ game.StarterGui:SetCore("SendNotification", {
     Duration = 5
 })
  end
- 
-local function api_plus()
-  wait(1)
-local player = game.Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
-local notification = Instance.new("ScreenGui")
-notification.Name = "notification"
-notification.Parent = playerGui
-
-local Background = Instance.new("Frame")
-Background.Size = UDim2.new(0, 300, 0, 50)  
-Background.Position = UDim2.new(0.5, -150, 0.5, -25) 
-Background.BackgroundColor3 = Color3.new(0, 0, 0)
-Background.Parent = notification
-
-local countdownText = Instance.new("TextLabel")
-countdownText.Text = "Bem vindo! (5)"
-countdownText.TextColor3 = Color3.new(1, 1, 1)
-countdownText.BackgroundColor3 = Color3.new(0, 0, 0)
-countdownText.TextSize = 19
-countdownText.Size = UDim2.new(1, 0, 1, 0)
-countdownText.Parent = Background
-
-local countdown = 5
-local countdownInterval = 1
-
-local function updateCountdown()
-    countdown = countdown - 1
-    countdownText.Text = "Bem vindo! (" .. countdown .. ")"
-
-    if countdown <= 0 then
-        notification:Destroy()
-    else
-
-        wait(countdownInterval)
-        updateCountdown()
-    end
-end
-
-updateCountdown()
- end
 
 local OrionLib = loadstring(game:HttpGet(theme))()
 local Window = OrionLib:MakeWindow({Name = "Better Admin️ - v" .. Versao, HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 api_plus()
 
--- códigos
+local espEnabled = false
+local espBoxTable = {}
+
 local player = game.Players.LocalPlayer
 local name = player.DisplayName
 
 local mapa = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name
 
--- Função para obter a data formatada
 local function getFormattedDate()
-    local date = os.date("*t") -- Obter a data atual
-    local formattedDate = string.format("%02d/%02d/%04d", date.day, date.month, date.year) -- Formatar a data como DD/MM/AAAA
-    return formattedDate -- Retornar a data formatada
+    local date = os.date("*t") 
+    local formattedDate = string.format("%02d/%02d/%04d", date.day, date.month, date.year) 
+    return formattedDate 
 end
 
--- Armazenar a data formatada na variável "data"
 local data = getFormattedDate()
 
--- tabs
 local Tab = Window:MakeTab({
 	Name = "início",
 	Icon = "rbxassetid://4483345998",
@@ -221,10 +47,64 @@ local Tab = Window:MakeTab({
 Tab:AddLabel("bem vindo: " .. name)
 Tab:AddLabel("jogo: " .. mapa)
 Tab:AddLabel("data: " .. data)
-Tab:AddLabel("seu rank:" .. rank)
 local Section = Tab:AddSection({
-	Name = "by:" .. Dono
+	Name = "Criado por:" .. Dono
 })
+
+local Tab = Window:MakeTab({
+	Name = "Tools",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+local Section = Tab:AddSection({
+	Name = "Tools"
+})
+local espToggle = MainTab:AddToggle({
+    Name = "Ativar ESP",
+    Default = false,
+    Callback = function(Value)
+        espEnabled = Value
+        if not Value then
+            -- Remova todos os ESPs existentes se o ESP estiver desativado
+            for _, espBox in pairs(espBoxTable) do
+                espBox:Remove()
+            end
+            espBoxTable = {} -- Limpe a tabela
+        end
+    end
+})
+
+game:GetService("RunService").RenderStepped:Connect(function()
+    if espEnabled then
+        for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+            if player ~= game.Players.LocalPlayer and player.Team ~= game.Players.LocalPlayer.Team and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                local rootPart = player.Character:FindFirstChild("HumanoidRootPart")
+                local espBox = espBoxTable[player]
+                if espBox then
+                    espBox.Size = rootPart.Size + Vector3.new(5, 5, 5) -- Aumente o tamanho da caixa
+                    espBox.Adornee = rootPart
+                else
+                    espBox = Instance.new("BoxHandleAdornment", rootPart)
+                    espBoxTable[player] = espBox
+                    espBox.Size = rootPart.Size + Vector3.new(5, 5, 5)
+                    espBox.AlwaysOnTop = true
+                    espBox.ZIndex = 10
+                    espBox.Transparency = 0.5
+                    espBox.Color3 = Color3.new(0, 0, 1) -- Cor do ESP (azul)
+                end
+            end
+        end
+
+        -- Remova ESPs de jogadores que não estão mais no seu time
+        for player, espBox in pairs(espBoxTable) do
+            if player.Team == game.Players.LocalPlayer.Team or not player.Character or not player.Character:FindFirstChild("HumanoidRootPart") then
+                espBox:Remove()
+                espBoxTable[player] = nil
+            end
+        end
+    end
+end)
+
 
 local Tab = Window:MakeTab({
 	Name = "Membro",
@@ -738,417 +618,6 @@ Tab:AddButton({
       		loadstring(game:GetObjects("rbxassetid://6695644299")[1].Source)()
   	end    
 })
-Tab:AddButton({
-	Name = ";Hide_head",
-	Callback = function()
-      		-- Variável para ativar ou desativar a funcionalidade de ocultar a cabeça do personagem
-local ocultarCabeca = true
-
--- Função para ocultar a cabeça do jogador
-local function toggleHeadVisibility(player)
-    -- Verificar se a funcionalidade de ocultar cabeça está ativada
-    if ocultarCabeca then
-        -- Verificar se o jogador possui um personagem e se a cabeça está disponível
-        if player.Character and player.Character:FindFirstChild("Head") then
-            -- Acessar a cabeça do personagem
-            local cabeca = player.Character.Head
-            
-            -- Verificar se a cabeça existe e é uma instância de BasePart
-            if cabeca and cabeca:IsA("BasePart") then
-                -- Ocultar a cabeça definindo sua transparência como 1 (completamente invisível)
-                cabeca.Transparency = 1
-                return "Cabeça do jogador ocultada."
-            else
-                return "Erro: Cabeça não encontrada ou não é uma instância de BasePart"
-            end
-        else
-            return "Erro: Jogador não tem um personagem ou a cabeça não está disponível"
-        end
-    else
-        return "Funcionalidade de ocultar cabeça desativada."
-    end
-end
-
--- Exemplo de uso: ocultar a cabeça do jogador local (substitua "game.Players.LocalPlayer" pelo jogador desejado)
-print(toggleHeadVisibility(game.Players.LocalPlayer))
-  	end    
-})
-Tab:AddButton({
-	Name = ";Unhide_head",
-	Callback = function()
-      		-- Variável para ativar ou desativar a funcionalidade de ocultar a cabeça do personagem
-local ocultarCabeca = false
-
--- Função para ocultar a cabeça do jogador
-local function toggleHeadVisibility(player)
-    -- Verificar se a funcionalidade de ocultar cabeça está ativada
-    if ocultarCabeca then
-        -- Verificar se o jogador possui um personagem e se a cabeça está disponível
-        if player.Character and player.Character:FindFirstChild("Head") then
-            -- Acessar a cabeça do personagem
-            local cabeca = player.Character.Head
-            
-            -- Verificar se a cabeça existe e é uma instância de BasePart
-            if cabeca and cabeca:IsA("BasePart") then
-                -- Ocultar a cabeça definindo sua transparência como 1 (completamente invisível)
-                cabeca.Transparency = 1
-                return "Cabeça do jogador ocultada."
-            else
-                return "Erro: Cabeça não encontrada ou não é uma instância de BasePart"
-            end
-        else
-            return "Erro: Jogador não tem um personagem ou a cabeça não está disponível"
-        end
-    else
-        return "Funcionalidade de ocultar cabeça desativada."
-    end
-end
-
--- Exemplo de uso: ocultar a cabeça do jogador local (substitua "game.Players.LocalPlayer" pelo jogador desejado)
-print(toggleHeadVisibility(game.Players.LocalPlayer))
-  	end    
-})
-Tab:AddButton({
-	Name = ";Invisible",
-	Callback = function()
-      		-- Variável para controlar a invisibilidade do jogador
-local invisibilidadeAtivada = true
-
--- Função para tornar o jogador invisível ou visível
-local function controlarInvisibilidadeDoJogador(player)
-    -- Verificar se a invisibilidade está ativada
-    if invisibilidadeAtivada then
-        -- Verificar se o jogador possui um personagem
-        if player.Character then
-            -- Acessar todas as partes do personagem
-            local parts = player.Character:GetDescendants()
-            
-            -- Iterar sobre todas as partes
-            for _, part in ipairs(parts) do
-                -- Verificar se a parte é uma instância de BasePart
-                if part:IsA("BasePart") then
-                    -- Definir a transparência da parte como 1 (totalmente invisível)
-                    part.Transparency = 1
-                end
-            end
-            return "Jogador tornou-se invisível."
-        else
-            return "Erro: Jogador não tem um personagem."
-        end
-    else
-        -- Se a invisibilidade não estiver ativada, tornar todas as partes do jogador visíveis
-        if player.Character then
-            local parts = player.Character:GetDescendants()
-            for _, part in ipairs(parts) do
-                if part:IsA("BasePart") then
-                    part.Transparency = 0
-                end
-            end
-            return "Jogador tornou-se visível."
-        else
-            return "Erro: Jogador não tem um personagem."
-        end
-    end
-end
-
--- Exemplo de uso: controlar a invisibilidade do jogador local (substitua "game.Players.LocalPlayer" pelo jogador desejado)
-print(controlarInvisibilidadeDoJogador(game.Players.LocalPlayer))
-  	end    
-})
-Tab:AddButton({
-	Name = ";Uninvisible",
-	Callback = function()
-      		-- Variável para controlar a invisibilidade do jogador
-local invisibilidadeAtivada = false
-
--- Função para tornar o jogador invisível ou visível
-local function controlarInvisibilidadeDoJogador(player)
-    -- Verificar se a invisibilidade está ativada
-    if invisibilidadeAtivada then
-        -- Verificar se o jogador possui um personagem
-        if player.Character then
-            -- Acessar todas as partes do personagem
-            local parts = player.Character:GetDescendants()
-            
-            -- Iterar sobre todas as partes
-            for _, part in ipairs(parts) do
-                -- Verificar se a parte é uma instância de BasePart
-                if part:IsA("BasePart") then
-                    -- Definir a transparência da parte como 1 (totalmente invisível)
-                    part.Transparency = 1
-                end
-            end
-            return "Jogador tornou-se invisível."
-        else
-            return "Erro: Jogador não tem um personagem."
-        end
-    else
-        -- Se a invisibilidade não estiver ativada, tornar todas as partes do jogador visíveis
-        if player.Character then
-            local parts = player.Character:GetDescendants()
-            for _, part in ipairs(parts) do
-                if part:IsA("BasePart") then
-                    part.Transparency = 0
-                end
-            end
-            return "Jogador tornou-se visível."
-        else
-            return "Erro: Jogador não tem um personagem."
-        end
-    end
-end
-
--- Exemplo de uso: controlar a invisibilidade do jogador local (substitua "game.Players.LocalPlayer" pelo jogador desejado)
-print(controlarInvisibilidadeDoJogador(game.Players.LocalPlayer))
-  	end    
-})
-
-local Tab = Window:MakeTab({
-	Name = "Owner",
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
-})
-local Section = Tab:AddSection({
-	Name = "Owner"
-})
-Tab:AddButton({
-	Name = ";rtx",
-	Callback = function()
-      		if not game:IsLoaded() then
-    game.Loaded:Wait()
-end
-local Bloom = Instance.new("BloomEffect")
-Bloom.Intensity = 0.1
-Bloom.Threshold = 0
-Bloom.Size = 100
-
-local Tropic = Instance.new("Sky")
-Tropic.Name = "Tropic"
-Tropic.SkyboxUp = "http://www.roblox.com/asset/?id=169210149"
-Tropic.SkyboxLf = "http://www.roblox.com/asset/?id=169210133"
-Tropic.SkyboxBk = "http://www.roblox.com/asset/?id=169210090"
-Tropic.SkyboxFt = "http://www.roblox.com/asset/?id=169210121"
-Tropic.StarCount = 100
-Tropic.SkyboxDn = "http://www.roblox.com/asset/?id=169210108"
-Tropic.SkyboxRt = "http://www.roblox.com/asset/?id=169210143"
-Tropic.Parent = Bloom
-
-local Sky = Instance.new("Sky")
-Sky.SkyboxUp = "http://www.roblox.com/asset/?id=196263782"
-Sky.SkyboxLf = "http://www.roblox.com/asset/?id=196263721"
-Sky.SkyboxBk = "http://www.roblox.com/asset/?id=196263721"
-Sky.SkyboxFt = "http://www.roblox.com/asset/?id=196263721"
-Sky.CelestialBodiesShown = false
-Sky.SkyboxDn = "http://www.roblox.com/asset/?id=196263643"
-Sky.SkyboxRt = "http://www.roblox.com/asset/?id=196263721"
-Sky.Parent = Bloom
-
-Bloom.Parent = game:GetService("Lighting")
-
-local Bloom = Instance.new("BloomEffect")
-Bloom.Enabled = false
-Bloom.Intensity = 0.35
-Bloom.Threshold = 0.2
-Bloom.Size = 56
-
-local Tropic = Instance.new("Sky")
-Tropic.Name = "Tropic"
-Tropic.SkyboxUp = "http://www.roblox.com/asset/?id=169210149"
-Tropic.SkyboxLf = "http://www.roblox.com/asset/?id=169210133"
-Tropic.SkyboxBk = "http://www.roblox.com/asset/?id=169210090"
-Tropic.SkyboxFt = "http://www.roblox.com/asset/?id=169210121"
-Tropic.StarCount = 100
-Tropic.SkyboxDn = "http://www.roblox.com/asset/?id=169210108"
-Tropic.SkyboxRt = "http://www.roblox.com/asset/?id=169210143"
-Tropic.Parent = Bloom
-
-local Sky = Instance.new("Sky")
-Sky.SkyboxUp = "http://www.roblox.com/asset/?id=196263782"
-Sky.SkyboxLf = "http://www.roblox.com/asset/?id=196263721"
-Sky.SkyboxBk = "http://www.roblox.com/asset/?id=196263721"
-Sky.SkyboxFt = "http://www.roblox.com/asset/?id=196263721"
-Sky.CelestialBodiesShown = false
-Sky.SkyboxDn = "http://www.roblox.com/asset/?id=196263643"
-Sky.SkyboxRt = "http://www.roblox.com/asset/?id=196263721"
-Sky.Parent = Bloom
-
-Bloom.Parent = game:GetService("Lighting")
-local Blur = Instance.new("BlurEffect")
-Blur.Size = 2
-
-Blur.Parent = game:GetService("Lighting")
-local Efecto = Instance.new("BlurEffect")
-Efecto.Name = "Efecto"
-Efecto.Enabled = false
-Efecto.Size = 2
-
-Efecto.Parent = game:GetService("Lighting")
-local Inaritaisha = Instance.new("ColorCorrectionEffect")
-Inaritaisha.Name = "Inari taisha"
-Inaritaisha.Saturation = 0.05
-Inaritaisha.TintColor = Color3.fromRGB(255, 224, 219)
-
-Inaritaisha.Parent = game:GetService("Lighting")
-local Normal = Instance.new("ColorCorrectionEffect")
-Normal.Name = "Normal"
-Normal.Enabled = false
-Normal.Saturation = -0.2
-Normal.TintColor = Color3.fromRGB(255, 232, 215)
-
-Normal.Parent = game:GetService("Lighting")
-local SunRays = Instance.new("SunRaysEffect")
-SunRays.Intensity = 0.05
-
-SunRays.Parent = game:GetService("Lighting")
-local Sunset = Instance.new("Sky")
-Sunset.Name = "Sunset"
-Sunset.SkyboxUp = "rbxassetid://323493360"
-Sunset.SkyboxLf = "rbxassetid://323494252"
-Sunset.SkyboxBk = "rbxassetid://323494035"
-Sunset.SkyboxFt = "rbxassetid://323494130"
-Sunset.SkyboxDn = "rbxassetid://323494368"
-Sunset.SunAngularSize = 14
-Sunset.SkyboxRt = "rbxassetid://323494067"
-
-Sunset.Parent = game:GetService("Lighting")
-local Takayama = Instance.new("ColorCorrectionEffect")
-Takayama.Name = "Takayama"
-Takayama.Enabled = false
-Takayama.Saturation = -0.3
-Takayama.Contrast = 0.1
-Takayama.TintColor = Color3.fromRGB(235, 214, 204)
-
-Takayama.Parent = game:GetService("Lighting")
-local L = game:GetService("Lighting")
-L.Brightness = 2.14
-L.ColorShift_Bottom = Color3.fromRGB(11, 0, 20)
-L.ColorShift_Top = Color3.fromRGB(240, 127, 14)
-L.OutdoorAmbient = Color3.fromRGB(34, 0, 49)
-L.ClockTime = 6.7
-L.FogColor = Color3.fromRGB(94, 76, 106)
-L.FogEnd = 1000
-L.FogStart = 0
-L.ExposureCompensation = 0.24
-L.ShadowSoftness = 0
-L.Ambient = Color3.fromRGB(59, 33, 27)
-
-local Bloom = Instance.new("BloomEffect")
-Bloom.Intensity = 0.1
-Bloom.Threshold = 0
-Bloom.Size = 100
-
-local Tropic = Instance.new("Sky")
-Tropic.Name = "Tropic"
-Tropic.SkyboxUp = "http://www.roblox.com/asset/?id=169210149"
-Tropic.SkyboxLf = "http://www.roblox.com/asset/?id=169210133"
-Tropic.SkyboxBk = "http://www.roblox.com/asset/?id=169210090"
-Tropic.SkyboxFt = "http://www.roblox.com/asset/?id=169210121"
-Tropic.StarCount = 100
-Tropic.SkyboxDn = "http://www.roblox.com/asset/?id=169210108"
-Tropic.SkyboxRt = "http://www.roblox.com/asset/?id=169210143"
-Tropic.Parent = Bloom
-
-local Sky = Instance.new("Sky")
-Sky.SkyboxUp = "http://www.roblox.com/asset/?id=196263782"
-Sky.SkyboxLf = "http://www.roblox.com/asset/?id=196263721"
-Sky.SkyboxBk = "http://www.roblox.com/asset/?id=196263721"
-Sky.SkyboxFt = "http://www.roblox.com/asset/?id=196263721"
-Sky.CelestialBodiesShown = false
-Sky.SkyboxDn = "http://www.roblox.com/asset/?id=196263643"
-Sky.SkyboxRt = "http://www.roblox.com/asset/?id=196263721"
-Sky.Parent = Bloom
-
-Bloom.Parent = game:GetService("Lighting")
-
-local Bloom = Instance.new("BloomEffect")
-Bloom.Enabled = false
-Bloom.Intensity = 0.35
-Bloom.Threshold = 0.2
-Bloom.Size = 56
-
-local Tropic = Instance.new("Sky")
-Tropic.Name = "Tropic"
-Tropic.SkyboxUp = "http://www.roblox.com/asset/?id=169210149"
-Tropic.SkyboxLf = "http://www.roblox.com/asset/?id=169210133"
-Tropic.SkyboxBk = "http://www.roblox.com/asset/?id=169210090"
-Tropic.SkyboxFt = "http://www.roblox.com/asset/?id=169210121"
-Tropic.StarCount = 100
-Tropic.SkyboxDn = "http://www.roblox.com/asset/?id=169210108"
-Tropic.SkyboxRt = "http://www.roblox.com/asset/?id=169210143"
-Tropic.Parent = Bloom
-
-local Sky = Instance.new("Sky")
-Sky.SkyboxUp = "http://www.roblox.com/asset/?id=196263782"
-Sky.SkyboxLf = "http://www.roblox.com/asset/?id=196263721"
-Sky.SkyboxBk = "http://www.roblox.com/asset/?id=196263721"
-Sky.SkyboxFt = "http://www.roblox.com/asset/?id=196263721"
-Sky.CelestialBodiesShown = false
-Sky.SkyboxDn = "http://www.roblox.com/asset/?id=196263643"
-Sky.SkyboxRt = "http://www.roblox.com/asset/?id=196263721"
-Sky.Parent = Bloom
-
-Bloom.Parent = game:GetService("Lighting")
-local Blur = Instance.new("BlurEffect")
-Blur.Size = 2
-
-Blur.Parent = game:GetService("Lighting")
-local Efecto = Instance.new("BlurEffect")
-Efecto.Name = "Efecto"
-Efecto.Enabled = false
-Efecto.Size = 2
-
-Efecto.Parent = game:GetService("Lighting")
-local Inaritaisha = Instance.new("ColorCorrectionEffect")
-Inaritaisha.Name = "Inari taisha"
-Inaritaisha.Saturation = 0.05
-Inaritaisha.TintColor = Color3.fromRGB(255, 224, 219)
-
-Inaritaisha.Parent = game:GetService("Lighting")
-local Normal = Instance.new("ColorCorrectionEffect")
-Normal.Name = "Normal"
-Normal.Enabled = false
-Normal.Saturation = -0.2
-Normal.TintColor = Color3.fromRGB(255, 232, 215)
-
-Normal.Parent = game:GetService("Lighting")
-local SunRays = Instance.new("SunRaysEffect")
-SunRays.Intensity = 0.05
-
-SunRays.Parent = game:GetService("Lighting")
-local Sunset = Instance.new("Sky")
-Sunset.Name = "Sunset"
-Sunset.SkyboxUp = "rbxassetid://323493360"
-Sunset.SkyboxLf = "rbxassetid://323494252"
-Sunset.SkyboxBk = "rbxassetid://323494035"
-Sunset.SkyboxFt = "rbxassetid://323494130"
-Sunset.SkyboxDn = "rbxassetid://323494368"
-Sunset.SunAngularSize = 14
-Sunset.SkyboxRt = "rbxassetid://323494067"
-
-Sunset.Parent = game:GetService("Lighting")
-local Takayama = Instance.new("ColorCorrectionEffect")
-Takayama.Name = "Takayama"
-Takayama.Enabled = false
-Takayama.Saturation = -0.3
-Takayama.Contrast = 0.1
-Takayama.TintColor = Color3.fromRGB(235, 214, 204)
-
-Takayama.Parent = game:GetService("Lighting")
-local L = game:GetService("Lighting")
-L.Brightness = 2.14
-L.ColorShift_Bottom = Color3.fromRGB(11, 0, 20)
-L.ColorShift_Top = Color3.fromRGB(240, 127, 14)
-L.OutdoorAmbient = Color3.fromRGB(34, 0, 49)
-L.ClockTime = 6.7
-L.FogColor = Color3.fromRGB(94, 76, 106)
-L.FogEnd = 1000
-L.FogStart = 0
-L.ExposureCompensation = 0.24
-L.ShadowSoftness = 0
-L.Ambient = Color3.fromRGB(59, 33, 27)
-  	end    
-})
-
 
 local Tab = Window:MakeTab({
 	Name = "Script hub",
