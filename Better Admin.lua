@@ -21,7 +21,7 @@ game.StarterGui:SetCore("SendNotification", {
 local OrionLib = loadstring(game:HttpGet(theme))()
 local Window = OrionLib:MakeWindow({Name = "Better Admin️ - v" .. Versao, HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
-api_plus()
+api()
 
 local espEnabled = false
 local espBoxTable = {}
