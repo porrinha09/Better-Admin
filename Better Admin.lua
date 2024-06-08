@@ -81,30 +81,18 @@ game:GetService("RunService").RenderStepped:Connect(function()
                 local rootPart = player.Character:FindFirstChild("HumanoidRootPart")
                 local espBox = espBoxTable[player]
                 if espBox then
-                    espBox.Size = rootPart.Size + Vector3.new(5, 5, 5) -- Aumente o tamanho da caixa
+                    espBox.Size = rootPart.Size + Vector3.new(5, 5, 5)
                     espBox.Adornee = rootPart
                 else
                     espBox = Instance.new("BoxHandleAdornment", rootPart)
                     espBoxTable[player] = espBox
                     espBox.Size = rootPart.Size + Vector3.new(5, 5, 5)
                     espBox.AlwaysOnTop = true
-                    espBox.ZIndex = 10
-                    espBox.Transparency = 0.5
-                    espBox.Color3 = Color3.new(0, 0, 1) -- Cor do ESP (azul)
                 end
-            end
-        end
-
-        -- Remova ESPs de jogadores que não estão mais no seu time
-        for player, espBox in pairs(espBoxTable) do
-            if player.Team == game.Players.LocalPlayer.Team or not player.Character or not player.Character:FindFirstChild("HumanoidRootPart") then
-                espBox:Remove()
-                espBoxTable[player] = nil
             end
         end
     end
 end)
-
 
 local Tab = Window:MakeTab({
 	Name = "Membro",
@@ -237,36 +225,6 @@ Tab:AddButton({
 player.CameraMode = Enum.CameraMode.Classic
 
 player.PlayerGui.MouseIconEnabled = true
-  	end    
-})
-Tab:AddButton({
-	Name = ";desativar movimentos",
-	Callback = function()
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-
-character:WaitForChild("Humanoid")
-
-local function disableMovement()
-    character:WaitForChild("Humanoid").WalkSpeed = 0
-end
-
-disableMovement()
-  	end    
-})
-Tab:AddButton({
-	Name = ";ativar movimentos",
-	Callback = function()
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-
-character:WaitForChild("Humanoid")
-
-local function enableMovement()
-    character:WaitForChild("Humanoid").WalkSpeed = 16 -- Pode ajustar para a velocidade desejada
-end
-
-enableMovement()
   	end    
 })
 Tab:AddButton({
